@@ -2,17 +2,31 @@
 <html>
 <body>
 
-<h1>The onclick Event</h1>
+<h1>Random Note Generator : For Ear Training</h1>
 
-<p>The onclick event is used to trigger a function when an element is clicked on.</p>
+<div id="note-list"></div>
 
-<p>Click the button to trigger a function that will output "Hello World" in a p element with id="demo".</p>
+<p>How many times should the note be played ?</p>
+<input type="number" id="repeat-count" value ="3">
+<br/><br/><br/>
+<p>Gap between consecutive notes ?</p>
+<input type="number" id="gap-among-notes" value ="2">
+<br/><br/><br/>
+<button onclick="playRandomNote()">Play a Random Note</button>
+<button onclick="checkAnswer()">Check Answer</button>
+<p id="answer-display"></p>
 
-<button onclick="playRandomNote()">Click me</button>
-
-<p id="demo"></p>
+<input type="hidden" id="note-answer">
 
 <script>
+
+var ALL_AUDIO_CLIPS = ["a3", "a4", "a5", "a-3", "a-4", "a-5",
+                   "b3", "b4", "b5",
+                   "c3", "c4", "c5", "c6", "c-3", "c-4", "c-5",
+                   "d3", "d4", "d5", "d-3", "d-4", "d-5",
+                   "e3", "e4", "e5", 
+                   "f3", "f4", "f5", "f-3", "f-4", "f-5", 
+                   "g3", "g4", "g5", "g-3", "g-4", "g-5" ];
 
 var AUDIO_CLIPS = ["a3", "a4", "a5", "a-3", "a-4", "a-5",
                    "b3", "b4", "b5",
@@ -22,12 +36,31 @@ var AUDIO_CLIPS = ["a3", "a4", "a5", "a-3", "a-4", "a-5",
                    "f3", "f4", "f5", "f-3", "f-4", "f-5", 
                    "g3", "g4", "g5", "g-3", "g-4", "g-5" ];
 
+// function showNoteList() {
+//     document.getElementById("note-list").innerHTML= '<input type="checkbox">Test</input>';
+// }
               
 function playRandomNote() {
+    document.getElementById("answer-display").textContent = "";
     var myAudio = new Audio();
-    myAudio.src = "./mp3_notes/" + AUDIO_CLIPS[(Math.floor(Math.random() * AUDIO_CLIPS.length) + 1)] + ".mp3";
-    myAudio.play();
+    var answer = AUDIO_CLIPS[(Math.floor(Math.random() * AUDIO_CLIPS.length) + 1)];
+    document.getElementById("note-answer").value = answer;
+    myAudio.src = "./mp3_notes/" + answer + ".mp3";
+    // myAudio.play();
+    
+    var count = document.getElementById("repeat-count").value;
+    var gap = document.getElementById("gap-among-notes").value;
+
+    for (i=0; i<count; i++) {
+        setTimeout(() => {myAudio.play();}, i*1000*gap);
+    }
+    // setTimeout(() => {myAudio.play();}, 4000)
 }
+
+function checkAnswer() {
+    document.getElementById("answer-display").textContent = document.getElementById("note-answer").value;
+}
+
 </script>
 
 </body>
