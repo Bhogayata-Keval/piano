@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html>
-<body>
+<body onload="showNoteList()">
 
 <h1>Random Note Generator : For Ear Training</h1>
 
 <div id="note-list"></div>
-
+<br/><br/><br/>
 <p>How many times should the note be played ?</p>
 <input type="number" id="repeat-count" value ="3">
 <br/><br/><br/>
@@ -34,11 +34,42 @@ var AUDIO_CLIPS = ["a3", "a4", "a5", "a-3", "a-4", "a-5",
                    "d3", "d4", "d5", "d-3", "d-4", "d-5",
                    "e3", "e4", "e5", 
                    "f3", "f4", "f5", "f-3", "f-4", "f-5", 
-                   "g3", "g4", "g5", "g-3", "g-4", "g-5" ];
+                   "g3", "g4", "g5", "g-3", "g-4", "g-5"];
 
-// function showNoteList() {
-//     document.getElementById("note-list").innerHTML= '<input type="checkbox">Test</input>';
-// }
+function showNoteList() {
+
+    let checkboxes = '';
+    for (i=0; i<ALL_AUDIO_CLIPS.length; i++) {
+        checkboxes += '<input type="checkbox" name="notes[]" checked="checked" onchange="checkUpdates()" value="' + ALL_AUDIO_CLIPS[i] + '">' + ALL_AUDIO_CLIPS[i] + '</input>';
+        if (i%5 == 0) {
+            checkboxes += '<br/>';
+        }
+    }
+    document.getElementById("note-list").innerHTML= checkboxes 
+    + '<br/><br/><br/><button onclick="updateAll(0)">Uncheck All</button>' 
+    + '<br/><br/><button onclick="updateAll(1)">Check All</button>';
+
+    // AUDIO_CLIPS = [];
+}
+
+function updateAll(value) {
+    var notes = document.getElementsByName("notes[]");
+    for (i=0; i<notes.length; i++) {
+        notes[i].checked = value == 0 ? false : true;
+    }
+
+    checkUpdates();
+}
+
+function checkUpdates() {
+    AUDIO_CLIPS = [];
+    var checkboxes1 = document.getElementsByName("notes[]");
+    for (i=0; i<checkboxes1.length; i++) {
+        if (checkboxes1[i].checked) {
+            AUDIO_CLIPS.push(checkboxes1[i].value);
+        }
+    }
+}
               
 function playRandomNote() {
     document.getElementById("answer-display").textContent = "";
