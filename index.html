@@ -74,7 +74,7 @@ function checkUpdates() {
 function playRandomNote() {
     document.getElementById("answer-display").textContent = "";
     var myAudio = new Audio();
-    var answer = AUDIO_CLIPS[(Math.floor(Math.random() * AUDIO_CLIPS.length) + 1)];
+    var answer = AUDIO_CLIPS[(Math.floor(Math.random() * AUDIO_CLIPS.length))];
     document.getElementById("note-answer").value = answer;
     myAudio.src = "./mp3_notes/" + answer + ".mp3";
     // myAudio.play();
